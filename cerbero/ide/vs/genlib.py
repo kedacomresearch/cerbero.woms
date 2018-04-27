@@ -84,7 +84,7 @@ class GenLib(object):
                 if os.path.exists( vcdir ):
                     for path in glob.glob( vcdir + '/*/bin/Hostx64/x64/lib.exe'):
                         if os.path.exists(path):
-                            return path
+                            return os.path.dirname(path)
         except:
             pass
 
