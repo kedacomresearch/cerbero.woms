@@ -72,4 +72,20 @@ class GenLib(object):
                 path = os.path.join(os.environ[variable], '..', '..', 'VC', 'bin', 'amd64')
                 if os.path.exists (path):
                     return path
+
+        try:
+            import glob
+            import winreg
+            with winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, 
+                r'SOFTWARE\Microsoft\VisualStudio\Setup') as hkey:
+                sdir  = _winreg.QueryValueEx(hkey, 'SharedInstallationPath')[0]
+                vcdir = os.path.join(sdir,r'..\2017\Community\VC\Tools\MSVC')
+                
+                if os.path.exists( vcdir ):
+                    for path in glob.glob( vcdir + '/*/bin/Hostx64/x64/lib.exe'):
+                        if os.path.exists(path):
+                            return os.path.dirname(path)
+        except:
+            pass
+
         return None
